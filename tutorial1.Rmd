@@ -1,0 +1,82 @@
+---
+title: "Tutorial1"
+author: "Lian van Vulpen"
+date: "2026-04-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(network)
+library(igraph)
+library(reshape2)
+library(tidyverse)
+```
+
+```{r}
+url1 <- "https://github.com/rensec/sasr08/raw/main/g_adj_matrix_simple.csv"
+g_matrix <- read.csv(file = url1, header = FALSE)
+g_matrix
+```
+```{r}
+class(g_matrix)
+```
+
+```{r}
+g_matrix <- as.matrix(g_matrix)
+g_matrix
+class(g_matrix)
+```
+
+```{r}
+rownames(g_matrix) <- 1:nrow(g_matrix)
+colnames(g_matrix) <- 1:ncol(g_matrix)
+g_matrix
+```
+
+```{r}
+g_nodes_age <- read.csv(file = "https://github.com/rensec/sasr08/raw/main/g_nodes_age.csv")
+g_nodes_age
+```
+
+```{r}
+g <- graph_from_adjacency_matrix(g_matrix)
+class(g)
+```
+
+```{r}
+g
+```
+
+```{r}
+plot(g)
+```
+
+```{r}
+g <- set_vertex_attr(g,
+                     name = "age",
+                     value = g_nodes_age$age)
+```
+
+```{r}
+g_elist <- read.csv(file = "https://github.com/rensec/sasr08/raw/main/g_elist.csv")
+g_elist
+```
+
+```{r}
+g_from_elist <- graph_from_data_frame(g_elist)
+plot(g_from_elist)
+```
+
+```{r}
+g_from_elist <- graph_from_data_frame(g_elist, vertices = g_nodes_age)
+plot(g_from_elist)
+```
+
+
+
+
+
